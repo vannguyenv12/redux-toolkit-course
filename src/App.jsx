@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -8,34 +8,22 @@ import {
   increment,
   incrementByAmount,
 } from "./redux/counter/counter.slice";
+import { fetchPosts } from "./redux/post/post.slice";
 
 function App() {
-  const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post.data);
+  console.log("posts", posts);
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, []);
 
   return (
     <div>
-      <div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
-        <button
-          aria-label="Increment value by 5"
-          onClick={() => dispatch(incrementByAmount(5))}
-        >
-          Increment value by 5
-        </button>
-      </div>
+      {posts.map((post) => {
+        return <div key={post.id}>{post.title}</div>;
+      })}
     </div>
   );
 }
