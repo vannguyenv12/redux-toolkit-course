@@ -12,16 +12,24 @@ import { fetchPosts } from "./redux/post/post.slice";
 
 function App() {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.post.data);
+  const posts = useSelector((state) => state.post);
   console.log("posts", posts);
 
   useEffect(() => {
     dispatch(fetchPosts());
   }, []);
 
+  if (posts.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (posts.error) {
+    return <div>Error...</div>;
+  }
+
   return (
     <div>
-      {posts.map((post) => {
+      {posts?.data?.map((post) => {
         return <div key={post.id}>{post.title}</div>;
       })}
     </div>

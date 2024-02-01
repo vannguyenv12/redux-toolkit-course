@@ -5,12 +5,15 @@ export const fetchPosts = createAsyncThunk(
   async (userId, thunkAPI) => {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const data = await response.json();
+    throw new Error("Error");
     return data;
   }
 );
 
 const initialState = {
   data: [],
+  isLoading: false,
+  error: null,
 };
 
 export const postSlice = createSlice({
@@ -19,18 +22,20 @@ export const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state, action) => {
-      // Add user to the state array
-      // do something error
+      state.isLoading = true;
     });
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       // Add user to the state array
       state.data = action.payload; // Immerjs
+      state.isLoading = false;
     });
 
     builder.addCase(fetchPosts.rejected, (state, action) => {
       // Add user to the state array
       // do something error
+      state.isLoading = false;
+      state.error = action.error;
     });
   },
 });
