@@ -18,11 +18,37 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "users/createUser",
+  async (data, thunkAPI) => {
+    const response = await axios.put(`http://localhost:3000/users/${data.id}`, {
+      name: data.name,
+      email: data.email,
+    });
+
+    thunkAPI.dispatch(fetchUsers());
+
+    return response.data;
+  }
+);
+
 export const fetchUserById = createAsyncThunk(
   "users/fetchUserById",
   async (userId) => {
     const response = await axios.get(`http://localhost:3000/users/${userId}`);
 
+    return response.data;
+  }
+);
+
+export const deleteUserById = createAsyncThunk(
+  "users/deleteUserById",
+  async (userId, thunkAPI) => {
+    const response = await axios.delete(
+      `http://localhost:3000/users/${userId}`
+    );
+
+    thunkAPI.dispatch(fetchUsers());
     return response.data;
   }
 );
@@ -49,6 +75,12 @@ export const userSlice = createSlice({
     changeEmail: (state, action) => {
       state.user.email = action.payload;
     },
+
+    resetUser: (state) => {
+      state.user.id = "";
+      state.user.email = "";
+      state.user.name = "";
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
@@ -66,6 +98,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeEmail, changeName } = userSlice.actions;
+export const { changeEmail, changeName, resetUser } = userSlice.actions;
 
 export default userSlice.reducer;

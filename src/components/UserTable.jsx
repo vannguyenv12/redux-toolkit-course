@@ -5,7 +5,16 @@ import Table from "react-bootstrap/Table";
 import { fetchUsers } from "../redux/user/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 
-function UserTable({ handleClose, handleShow, userEditId, setUserEditId }) {
+function UserTable({
+  handleClose,
+  handleShow,
+  userEditId,
+  setUserEditId,
+  handleDeleteShow,
+  handleDeleteClose,
+  userDeleteId,
+  setUserDeleteId,
+}) {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.data);
 
@@ -18,7 +27,10 @@ function UserTable({ handleClose, handleShow, userEditId, setUserEditId }) {
     setUserEditId(userId);
   };
 
-  console.log(userEditId);
+  const handleDelete = (userId) => {
+    handleDeleteShow();
+    setUserDeleteId(userId);
+  };
 
   return (
     <Table striped bordered hover>
@@ -41,7 +53,9 @@ function UserTable({ handleClose, handleShow, userEditId, setUserEditId }) {
                 <Button variant="primary" onClick={() => handleEdit(user.id)}>
                   Edit
                 </Button>
-                <Button variant="danger">Delete</Button>
+                <Button variant="danger" onClick={() => handleDelete(user.id)}>
+                  Delete
+                </Button>
               </td>
             </tr>
           );

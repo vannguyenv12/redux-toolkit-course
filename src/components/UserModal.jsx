@@ -9,10 +9,17 @@ import {
   changeName,
   createUser,
   fetchUserById,
+  updateUser,
 } from "../redux/user/user.slice";
 
 // eslint-disable-next-line react/prop-types
-function UserModal({ show, handleClose, handleShow, userEditId }) {
+function UserModal({
+  show,
+  handleClose,
+  handleShow,
+  userEditId,
+  setUserEditId,
+}) {
   const dispatch = useDispatch();
 
   const { name, email } = useSelector((state) => state.user.user);
@@ -20,24 +27,24 @@ function UserModal({ show, handleClose, handleShow, userEditId }) {
   // Lift state up
 
   const handleSave = async () => {
-    try {
+    if (userEditId) {
+      const data = { id: userEditId, name, email };
+      dispatch(updateUser(data));
+      toast.success("Updated User Successfully!");
+    } else {
+      console.log("hit");
       const data = { name, email };
       dispatch(createUser(data));
       // toast
       toast.success("Created User Successfully!");
-      // Close modal
-      handleClose();
-    } catch (error) {
-      console.log(error);
     }
+    // Close modal
+    handleClose();
   };
 
   useEffect(() => {
     // Fetch API fetchUserById
     dispatch(fetchUserById(userEditId));
-    // Binding to state
-    // setEmail(user.email);
-    // setName(user.name);
   }, [userEditId]);
 
   return (
