@@ -1,16 +1,10 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 
-function UserTable() {
-  const [users, setUsers] = useState([]);
-
-  async function fetchUsers() {
-    const response = await axios.get("http://localhost:3000/users");
-    setUsers(response.data);
-  }
-
+function UserTable({ users, fetchUsers }) {
   useEffect(() => {
     fetchUsers();
   }, []);
