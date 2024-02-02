@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { fetchUsers } from "../redux/user/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 
-function UserTable({ handleClose, handleShow }) {
+function UserTable({ handleClose, handleShow, userEditId, setUserEditId }) {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.data);
 
@@ -16,7 +15,10 @@ function UserTable({ handleClose, handleShow }) {
 
   const handleEdit = (userId) => {
     handleShow();
+    setUserEditId(userId);
   };
+
+  console.log(userEditId);
 
   return (
     <Table striped bordered hover>

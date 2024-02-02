@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function App() {
   const [show, setShow] = useState(false);
+  const [userEditId, setUserEditId] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -16,11 +17,14 @@ function App() {
         show={show}
         handleClose={handleClose}
         handleShow={handleShow}
+        userEditId={userEditId}
+        setUserEditId={setUserEditId}
       />
       <UserModal
         show={show}
         handleClose={handleClose}
         handleShow={handleShow}
+        userEditId={userEditId}
       />
     </div>
   );

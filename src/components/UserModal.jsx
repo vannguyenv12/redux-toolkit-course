@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { createUser, fetchUsers } from "../redux/user/user.slice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeEmail,
+  changeName,
+  createUser,
+  fetchUserById,
+} from "../redux/user/user.slice";
 
 // eslint-disable-next-line react/prop-types
-function UserModal({ show, handleClose, handleShow }) {
+function UserModal({ show, handleClose, handleShow, userEditId }) {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const { name, email } = useSelector((state) => state.user.user);
 
   // Lift state up
 
@@ -28,6 +31,14 @@ function UserModal({ show, handleClose, handleShow }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    // Fetch API fetchUserById
+    dispatch(fetchUserById(userEditId));
+    // Binding to state
+    // setEmail(user.email);
+    // setName(user.name);
+  }, [userEditId]);
 
   return (
     <>
@@ -47,7 +58,7 @@ function UserModal({ show, handleClose, handleShow }) {
                 type="text"
                 placeholder="Enter name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => dispatch(changeName(e.target.value))}
               />
             </Form.Group>
 
@@ -57,7 +68,7 @@ function UserModal({ show, handleClose, handleShow }) {
                 type="email"
                 placeholder="Enter email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => dispatch(changeEmail(e.target.value))}
               />
             </Form.Group>
           </Form>
