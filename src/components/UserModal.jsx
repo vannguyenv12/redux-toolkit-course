@@ -8,16 +8,11 @@ import { useDispatch } from "react-redux";
 import { createUser, fetchUsers } from "../redux/user/user.slice";
 
 // eslint-disable-next-line react/prop-types
-function UserModal() {
+function UserModal({ show, handleClose, handleShow }) {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   // Lift state up
 

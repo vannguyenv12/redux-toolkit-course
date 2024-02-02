@@ -1,17 +1,27 @@
 import UserTable from "./components/UserTable";
 import Header from "./components/Navbar";
 import UserModal from "./components/UserModal";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "./redux/user/user.slice";
+import { useState } from "react";
 
 function App() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div>
       <Header />
-      <UserTable />
-      <UserModal />
+      <UserTable
+        show={show}
+        handleClose={handleClose}
+        handleShow={handleShow}
+      />
+      <UserModal
+        show={show}
+        handleClose={handleClose}
+        handleShow={handleShow}
+      />
     </div>
   );
 }

@@ -6,13 +6,17 @@ import Table from "react-bootstrap/Table";
 import { fetchUsers } from "../redux/user/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 
-function UserTable() {
+function UserTable({ handleClose, handleShow }) {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.data);
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
+
+  const handleEdit = (userId) => {
+    handleShow();
+  };
 
   return (
     <Table striped bordered hover>
@@ -32,7 +36,9 @@ function UserTable() {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <Button variant="primary">Edit</Button>
+                <Button variant="primary" onClick={() => handleEdit(user.id)}>
+                  Edit
+                </Button>
                 <Button variant="danger">Delete</Button>
               </td>
             </tr>
