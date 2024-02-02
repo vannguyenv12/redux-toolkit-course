@@ -3,10 +3,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import { fetchUsers } from "../redux/user/user.slice";
+import { useDispatch, useSelector } from "react-redux";
 
-function UserTable({ users, fetchUsers }) {
+function UserTable() {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.user.data);
+
   useEffect(() => {
-    fetchUsers();
+    dispatch(fetchUsers());
   }, []);
 
   return (

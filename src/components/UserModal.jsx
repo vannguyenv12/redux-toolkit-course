@@ -3,9 +3,14 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { createUser, fetchUsers } from "../redux/user/user.slice";
 
 // eslint-disable-next-line react/prop-types
-function UserModal({ fetchUsers }) {
+function UserModal() {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
@@ -19,11 +24,11 @@ function UserModal({ fetchUsers }) {
   const handleSave = async () => {
     try {
       const data = { name, email };
-      const res = await axios.post("http://localhost:3000/users", data);
+      dispatch(createUser(data));
+      // toast
+      toast.success("Created User Successfully!");
       // Close modal
       handleClose();
-      // Fetch API
-      fetchUsers();
     } catch (error) {
       console.log(error);
     }
